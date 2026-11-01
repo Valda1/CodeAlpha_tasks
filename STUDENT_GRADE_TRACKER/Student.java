@@ -12,12 +12,37 @@ public class Student {
         this.grade = grade;
     }
 
-    /*public void setFullName(String fullName){
+    public void setStudentID(int studentID){
+        this.studentID = studentID;
+    }
+
+    public int getStudentID(){
+        return studentID;
+    }
+
+    public void setFullName(String fullName){
         this.fullName = fullName;
     }
    
     public String getFullName(){
         return fullName;
-    }*/
+    }
+
+    public void setSubject(String subject){
+        this.subject = subject;
+    }
+
+    public String getSubject(){
+        return subject;
+    } 
+
+    public void setGrade(double grade){
+        this.grade = grade;
+    }
+
+    public double getGrade(){
+        return grade;
+    }
+
 
  }
