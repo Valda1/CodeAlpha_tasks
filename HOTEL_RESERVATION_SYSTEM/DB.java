@@ -178,24 +178,26 @@ public class DB {
                 //String updateSQL = "UPDATE rooms JOIN reservations ON rooms.room_id = reservations.room_num SET rooms is_available = TRUE WHERE reservations.room_num = ? AND is_available = FALSE";
                 String updateSQL = "UPDATE rooms SET is_available = TRUE WHERE room_id = ? AND is_available = FALSE";
 
+                PreparedStatement ps2 = conn.prepareStatement(selectSQL);
+                ResultSet rs = ps2.executeQuery();
+                int roomNumber = rs.getInt("room_num");
+
+                PreparedStatement ps3 = conn.prepareStatement(updateSQL);
+                //ps3.setInt(1, roomNumber);
+
+                if(!rs.next()){
+                    System.out.println("Reservation not found!");
+                    conn.rollback();
+                    return;
+                }
+
                 PreparedStatement ps1 = conn.prepareStatement(deleteSQL);
                 ps1.setInt(1, reservationID);
-
                 int rowDeleted = ps1.executeUpdate();
 
                 if(rowDeleted > 0){
                     System.out.println("Your reservation has been cancelled!");
 
-                    int roomNumber;
-
-                    PreparedStatement ps2 = conn.prepareStatement(selectSQL);
-                    ResultSet rs = ps2.executeQuery();
-
-                    if(rs.next()){
-                        
-                    }
-
-                    PreparedStatement ps3 = conn.prepareStatement(updateSQL);
                     ps3.setInt(1, roomNumber);
                 }else{
                     System.out.println("Something went wrong!");
