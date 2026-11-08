@@ -37,4 +37,4 @@ INSERT INTO rooms (room_id, is_available, category, price) VALUES (13, true, 'Su
 INSERT INTO rooms (room_id, is_available, category, price) VALUES (14, true, 'Suite', 300.00);
 INSERT INTO rooms (room_id, is_available, category, price) VALUES (15, true, 'Suite', 300.00);
 
-INSERT INTO reservations (reservation_id, room_id, date, full_name) VALUES (1, 1, '2026-10-24' , 'Anna Smith');
+INSERT INTO reservations (reservation_id, room_num, date, full_name) VALUES (1, 1, '2026-10-24' , 'Anna Smith');
