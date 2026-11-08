@@ -113,22 +113,19 @@ public class DB {
             try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
                 Scanner scanner = new Scanner(System.in);
 
+                String selectSQL = "SELECT room_num FROM reservations WHERE reservation_id = ?";
+                String deleteSQL = "DELETE FROM reservations WHERE reservation_id = ?";
+                //String updateSQL = "UPDATE rooms JOIN reservations ON rooms.room_id = reservations.room_num SET rooms is_available = TRUE WHERE reservations.room_num = ? AND is_available = FALSE";
+                String updateSQL = "UPDATE rooms SET is_available = TRUE WHERE room_id = ? AND is_available = FALSE";
+                
                 System.out.println("Please enter your reservation ID:");
                 int reservationID = scanner.nextInt();
 
                 //conn.setAutoCommit(false);
 
-                String selectSQL = "SELECT room_num FROM reservations WHERE reservation_id = ?";
-                String deleteSQL = "DELETE FROM reservations WHERE reservation_id = ?";
-                //String updateSQL = "UPDATE rooms JOIN reservations ON rooms.room_id = reservations.room_num SET rooms is_available = TRUE WHERE reservations.room_num = ? AND is_available = FALSE";
-                String updateSQL = "UPDATE rooms SET is_available = TRUE WHERE room_id = ? AND is_available = FALSE";
-
                 PreparedStatement ps2 = conn.prepareStatement(selectSQL);
+                ps2.setInt(1, reservationID);
                 ResultSet rs = ps2.executeQuery();
-                int roomNumber = rs.getInt("room_num");
-
-                PreparedStatement ps3 = conn.prepareStatement(updateSQL);
-                //ps3.setInt(1, roomNumber);
 
                 if(!rs.next()){
                     System.out.println("Reservation not found!");
@@ -136,9 +133,15 @@ public class DB {
                     return;
                 }
 
+                int roomNumber = rs.getInt("room_num");
+
                 PreparedStatement ps1 = conn.prepareStatement(deleteSQL);
                 ps1.setInt(1, reservationID);
                 int rowDeleted = ps1.executeUpdate();
+
+                PreparedStatement ps3 = conn.prepareStatement(updateSQL);
+                //ps3.setInt(1, roomNumber);
+                ps3.executeUpdate();
 
                 if(rowDeleted > 0){
                     System.out.println("Your reservation has been cancelled!");
