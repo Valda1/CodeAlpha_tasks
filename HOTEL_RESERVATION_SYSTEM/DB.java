@@ -25,14 +25,14 @@ public class DB {
             System.out.println("Please choose the number of the room you would like to book:");
             int selectedRoom = scanner.nextInt();
 
-            String sql = "SELECT isAvailable FROM rooms WHERE room_id = ?";
+            String sql = "SELECT is_available FROM rooms WHERE room_id = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, selectedRoom);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        boolean isAvailable = rs.getBoolean("isAvailable");
+                        boolean isAvailable = rs.getBoolean("is_available");
 
                         if (isAvailable) {
                             System.out.println("Room is available!");
@@ -70,9 +70,9 @@ public class DB {
     public void saveReservation(Connection conn, int roomNumber, String fullName) throws SQLException {
         LocalDate date = LocalDate.now();
 
-        String updateSQL = "UPDATE rooms SET isAvailable = FALSE WHERE room_id = ? AND isAvailable =TRUE";
+        String updateSQL = "UPDATE rooms SET is_available = FALSE WHERE room_id = ? AND is_available =TRUE";
 
-        String insertSQL = "INSERT INTO reservations (room_id, date, full_name) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO reservations (room_num, date, full_name) VALUES (?, ?, ?)";
 
         conn.setAutoCommit(false);
 
