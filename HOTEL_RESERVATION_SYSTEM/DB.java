@@ -1,4 +1,3 @@
-package HOTEL_RESERVATION_SYSTEM;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +8,7 @@ import java.util.Scanner;
 import java.sql.ResultSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+//package HOTEL_RESERVATION_SYSTEM;
 
 public class DB {
 
@@ -48,61 +48,6 @@ public class DB {
         }
     }
 }
-
-    
-    /*public int selectRoom1() {
-        Reservation newReservation = new Reservation();
-        Scanner scanner = new Scanner(System.in);
-
-        try (Connection conn = DriverManager.getConnection(dbURL, user, password)) {
-
-            boolean x = true;
-
-            while (x) {
-                System.out.println("Please choose the number of the room you would like to book:");
-                int selectedRoom = scanner.nextInt();
-
-                String sql = "SELECT isAvailable FROM rooms WHERE room_id = ?";
-
-                try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-
-                    preparedStatement.setInt(1, selectedRoom);
-
-                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
-                                    try (ResultSet rs = ps.executeQuery()) {
-                                        if (!rs.next()) {
-                                            System.out.println("This room does not exist. Try again!");
-                                            continue;
-                                        }
-
-                                        if (rs.getBoolean("isAvailable")) {
-                                            System.out.println("Room is available!");
-                                            return selectedRoom;
-                                        }
-
-                        if (resultSet.next()) {
-                            boolean isAvailable = resultSet.getBoolean("isAvailable");
-
-                            if (isAvailable) {
-                                System.out.println("Room is available");
-                                x = false;
-                                return selectedRoom;
-                            } else {
-                                System.out.println("This room is not available. Please choose another room!");
-                            }
-
-                        } else {
-                            System.out.println("This room does not exist. Please choose another room!");
-                        }
-                    }
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Something went wrong! " + e.getMessage());
-        }
-    }*/
 
     public String collectUserInfo(){
         Scanner scanner = new Scanner(System.in);
@@ -214,7 +159,7 @@ public class DB {
                 System.out.println("Please enter the ID number of your reservation:");
                 int reservationID = scanner.nextInt();
 
-                String selectSQL = "SELECT room_id, date, full_name from reservations WHERE reservation_id = ?";
+                String selectSQL = "SELECT room_num, date, full_name from reservations WHERE reservation_id = ?";
 
                 /*System.out.println("Please enter the room number:");
                 int roomNumber = scanner.nextInt();
@@ -259,7 +204,15 @@ public class DB {
         }
     }
 
-    
+    public void makePayment(){
+        try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
+
+
+
+        }catch(SQLException e){
+            System.out.println("Payment failed: " + e.getMessage());
+        }
+    }
 
    
 }
