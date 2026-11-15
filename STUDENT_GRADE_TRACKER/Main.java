@@ -28,14 +28,14 @@ public class Main {
 
        //System.out.println(getAverageBySubject(students, "History"));
 
-       double averageBySubject = getAverageBySubject(students);
-       System.out.println("Average grade: " + averageBySubject);
+       double averageBySubjectForSingleStudent = getAverageBySubject(students);
+       System.out.println("Average grade: " + averageBySubjectForSingleStudent);
 
        double averageForStudent = getAverageForStudent(students);
        System.out.println("Average grade for this student: " + averageForStudent);
 
-    
-
+       double averageForSubject = getAverageForSubject(students);
+       System.out.println("Average grade for this subject: " + averageForSubject);
 
     }
 
@@ -79,6 +79,31 @@ public class Main {
                 Student student = students.get(i);
 
                 if(student.getStudentID() == studentID){
+                    sum = sum + student.getGrade();
+                    count++;
+                }
+            }
+
+            if(count == 0){
+                return 0;
+            }else{
+                return sum / count;
+            }
+
+        }
+
+        public static double getAverageForSubject(ArrayList<Student> students){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter the subject: ");
+            String subject = scanner.next();
+
+            double sum = 0;
+            int count = 0;
+
+            for(int i = 0; i < students.size(); i++){
+                Student student = students.get(i);
+
+                if(student.getSubject().equals(subject)){
                     sum = sum + student.getGrade();
                     count++;
                 }
