@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,37 +26,41 @@ public class Main {
 
        //Iterator<Student> iterator = students.iterator();
 
-       System.out.println(getAverageBySubject(students, "History"));
+       //System.out.println(getAverageBySubject(students, "History"));
+
+       double average = getAverageBySubject(students);
+
+       System.out.println("Average grade: " + average);
+
 
     }
 
-        public static double getAverageBySubject(ArrayList<Student> students, String subject){
-        double sum = 0;
-        int count = 0;
+        public static double getAverageBySubject(ArrayList<Student> students){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter the student's ID: ");
+            int studentID = scanner.nextInt();
+            scanner.nextLine(); // Consume the leftover newline
+            System.out.println("Enter the subject: ");
+            String subject = scanner.next();
 
-        /*for (Student student : students){
-            if(student.getSubject().equals(subject)){
-                sum += student.getGrade();
-                count++;
+            double sum = 0;
+            int count = 0;
+
+            for(int i = 0; i < students.size(); i++){
+                Student student = students.get(i);
+
+                if(student.getStudentID() == studentID && student.getSubject().equals(subject)){
+                    sum = sum + student.getGrade();
+                    count = count +1;
+                }
             }
-        }*/
 
-        for(int i = 0; i < students.size(); i++){
-            Student student = students.get(i);
-
-            if(student.getSubject().equals(subject)){
-                sum = sum + student.getGrade();
-                count = count +1;
+            if(count == 0){
+                return 0;
+            }else{
+                return sum / count;
             }
-        }
 
-        if(count == 0){
-            return 0;
-        }else{
-            return sum / count;
-        }
-
-        //return count == 0 ? 0 : sum / count;
     }
 
 }
