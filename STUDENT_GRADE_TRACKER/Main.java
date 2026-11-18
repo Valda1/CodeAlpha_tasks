@@ -28,33 +28,29 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
 
-        switch(choice) {
+        switch(choice){
             case 1:
-                getAverageBySubject(students);
+                double average1 = getAverageBySubject(students);
+                System.out.println("Average grade: " + average1);
                 break;
             case 2:
-                getAverageForStudent(students);
+                double average2 = getAverageForStudent(students);
+                System.out.println("Average grade: " + average2);
                 break;
             case 3:
-                getAverageForSubject(students);
+                double average3 = getAverageForSubject(students);
+                System.out.println("Average grade: " + average3);
                 break;
     }
-       
-       //System.out.println(students.get(0).name);  // Anna
-       //System.out.println(students.get(1).grade); // 8.0
 
-       //Iterator<Student> iterator = students.iterator();
+       //double averageBySubjectForSingleStudent = getAverageBySubject(students);
+       //System.out.println("Average grade: " + averageBySubjectForSingleStudent);
 
-       //System.out.println(getAverageBySubject(students, "History"));
+       //double averageForStudent = getAverageForStudent(students);
+       //System.out.println("Average grade for this student: " + averageForStudent);
 
-       double averageBySubjectForSingleStudent = getAverageBySubject(students);
-       System.out.println("Average grade: " + averageBySubjectForSingleStudent);
-
-       double averageForStudent = getAverageForStudent(students);
-       System.out.println("Average grade for this student: " + averageForStudent);
-
-       double averageForSubject = getAverageForSubject(students);
-       System.out.println("Average grade for this subject: " + averageForSubject);
+       //double averageForSubject = getAverageForSubject(students);
+       //System.out.println("Average grade for this subject: " + averageForSubject);
 
     }
 
