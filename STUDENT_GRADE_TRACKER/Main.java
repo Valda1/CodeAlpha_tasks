@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -20,6 +19,26 @@ public class Main {
        students.add(new Student(101, "Anna Johnson", "History", 4.6));
        students.add(new Student(103, "Maria Thompson", "History", 3.0));
        students.add(new Student(102, "John Doe", "History", 9.2));
+
+        System.out.println("Welcome to our Student Grade Tracker System!");
+        System.out.println("______________________");
+        System.out.println("What would you like to do?");
+        printOptions();
+
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+
+        switch(choice) {
+            case 1:
+                getAverageBySubject(students);
+                break;
+            case 2:
+                getAverageForStudent(students);
+                break;
+            case 3:
+                getAverageForSubject(students);
+                break;
+    }
        
        //System.out.println(students.get(0).name);  // Anna
        //System.out.println(students.get(1).grade); // 8.0
@@ -37,6 +56,13 @@ public class Main {
        double averageForSubject = getAverageForSubject(students);
        System.out.println("Average grade for this subject: " + averageForSubject);
 
+    }
+
+        public static void printOptions () {
+            System.out.println("\nPress");
+            System.out.println("\t 1 - Calculate average grade of a student in a specific subject");
+            System.out.println("\t 2 - Calculate average grade of a student across all subjects");
+            System.out.println("\t 3 - Calculate average grade of all students in a specific subject");
     }
 
         public static double getAverageBySubject(ArrayList<Student> students){
