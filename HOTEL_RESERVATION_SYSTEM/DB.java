@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 public class DB {
 
     final String dbURL = "jdbc:mysql://localhost:3306/JAVA_hotel_reservation_system";
-    final String user = "root";
-    final String password = "root";
+    final String user = "";
+    final String password = "";
 
 
     public int selectRoom(){
