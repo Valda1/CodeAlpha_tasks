@@ -39,7 +39,11 @@ public class Main {
                 break;
             case 2:
                 double average2 = getAverageForStudent(students);
-                System.out.println("Average grade: " + average2);
+
+                if(average2 != -1){
+                    System.out.println("Average grade: " + average2);
+                }
+
                 break;
             case 3:
                 double average3 = getAverageForSubject(students);
@@ -120,21 +124,25 @@ public class Main {
             double sum = 0;
             int count = 0;
 
+            boolean studentExists = false;
+
             for(int i = 0; i < students.size(); i++){
                 Student student = students.get(i);
 
                 if(student.getStudentID() == studentID){
+                    studentExists = true;
+
                     sum = sum + student.getGrade();
                     count++;
                 }
+            } 
+
+            if(!studentExists){
+                System.out.println("This student ID does not exist! Try again!");
+                return -1;
             }
 
-            if(count == 0){
-                System.out.println("Student ID does not exist!");
-                return 0;
-            }else{
-                return sum / count;
-            }
+            return sum / count;
 
         }
 
