@@ -3,8 +3,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
-        //Student myStudent = new Student(int studentID, String fullName, String subject, double grade);
        
        ArrayList<Student> students = new ArrayList<>();
        
@@ -47,18 +45,13 @@ public class Main {
                 break;
             case 3:
                 double average3 = getAverageForSubject(students);
-                System.out.println("Average grade: " + average3);
+
+                if(average3 != -1){
+                    System.out.println("Average grade: " + average3);
+                }
+
                 break;
     }
-
-       //double averageBySubjectForSingleStudent = getAverageBySubject(students);
-       //System.out.println("Average grade: " + averageBySubjectForSingleStudent);
-
-       //double averageForStudent = getAverageForStudent(students);
-       //System.out.println("Average grade for this student: " + averageForStudent);
-
-       //double averageForSubject = getAverageForSubject(students);
-       //System.out.println("Average grade for this subject: " + averageForSubject);
 
     }
 
@@ -154,21 +147,26 @@ public class Main {
             double sum = 0;
             int count = 0;
 
+            boolean subjectExists = false;
+
             for(int i = 0; i < students.size(); i++){
                 Student student = students.get(i);
 
                 if(student.getSubject().equals(subject)){
+                    subjectExists = true;
+
                     sum = sum + student.getGrade();
                     count++;
                 }
+
             }
 
-            if(count == 0){
-                System.out.println("This subject does not exist!");
-                return 0;
-            }else{
-                return sum / count;
+            if(!subjectExists){
+                System.out.println("This subject does not exist! Try again!");
+                return -1;
             }
+
+            return sum / count;
 
         }
     }
