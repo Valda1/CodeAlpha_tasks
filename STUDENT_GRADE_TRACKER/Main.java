@@ -31,7 +31,11 @@ public class Main {
         switch(choice){
             case 1:
                 double average1 = getAverageBySubject(students);
-                System.out.println("Average grade: " + average1);
+
+                if(average1 != -1){
+                    System.out.println("Average grade: " + average1); 
+                }
+
                 break;
             case 2:
                 double average2 = getAverageForStudent(students);
@@ -72,8 +76,19 @@ public class Main {
             double sum = 0;
             int count = 0;
 
+            boolean studentExists = false;
+            boolean subjectExists = false;
+
             for(int i = 0; i < students.size(); i++){
                 Student student = students.get(i);
+
+                if(student.getStudentID() == studentID){
+                    studentExists = true;
+                }
+
+                if(student.getSubject().equalsIgnoreCase(subject)){
+                    subjectExists = true;
+                }
 
                 if(student.getStudentID() == studentID && student.getSubject().equals(subject)){
                     sum = sum + student.getGrade();
@@ -81,11 +96,19 @@ public class Main {
                 }
             }
 
-            if(count == 0){
-                return 0;
-            }else{
-                return sum / count;
+            if(!studentExists){
+                System.out.println("This student ID does not exist! Try again!");
             }
+
+            if(!subjectExists){
+                System.out.println("This subject does not exist! Try again!");
+            }
+
+            if(count == 0){
+                return -1;
+            }
+
+            return sum / count;
 
         }
 
@@ -107,6 +130,7 @@ public class Main {
             }
 
             if(count == 0){
+                System.out.println("Student ID does not exist!");
                 return 0;
             }else{
                 return sum / count;
@@ -132,6 +156,7 @@ public class Main {
             }
 
             if(count == 0){
+                System.out.println("This subject does not exist!");
                 return 0;
             }else{
                 return sum / count;
