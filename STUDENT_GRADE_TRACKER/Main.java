@@ -51,6 +51,9 @@ public class Main {
                 }
 
                 break;
+            default:
+                System.out.println("Invalid option! Please enter 1, 2 or 3.");
+                break;
     }
 
     }
@@ -66,7 +69,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the student's ID: ");
             int studentID = scanner.nextInt();
-            scanner.nextLine(); // Consume the leftover newline
+            //scanner.nextLine(); //Consume the leftover newline
             System.out.println("Enter the subject: ");
             String subject = scanner.next();
 
@@ -87,7 +90,7 @@ public class Main {
                     subjectExists = true;
                 }
 
-                if(student.getStudentID() == studentID && student.getSubject().equals(subject)){
+                if(student.getStudentID() == studentID && student.getSubject().equalsIgnoreCase(subject)){
                     sum = sum + student.getGrade();
                     count = count +1;
                 }
@@ -152,7 +155,7 @@ public class Main {
             for(int i = 0; i < students.size(); i++){
                 Student student = students.get(i);
 
-                if(student.getSubject().equals(subject)){
+                if(student.getSubject().equalsIgnoreCase(subject)){
                     subjectExists = true;
 
                     sum = sum + student.getGrade();
