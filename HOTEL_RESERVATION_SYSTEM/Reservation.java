@@ -1,15 +1,15 @@
 import java.time.LocalDate;
 
 public class Reservation{
+    private int reservationID;
     private int roomNumber;
     private LocalDate date;
-    private int reservationID;
     private String fullName;
 
-    public Reservation(int roomNumber, LocalDate date, int reservationID, String fullName) {
+    public Reservation(int reservationID, int roomNumber, LocalDate date, String fullName) {
+        this.reservationID = reservationID;
         this.roomNumber = roomNumber;
         this.date = date;
-        this.reservationID = reservationID;
         this.fullName = fullName;
     }
 
