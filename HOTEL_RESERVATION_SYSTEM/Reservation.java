@@ -13,6 +13,12 @@ public class Reservation{
         this.fullName = fullName;
     }
 
+    public Reservation(LocalDate date, int roomNumber, String fullName) {
+        this.date = date;
+        this.roomNumber = roomNumber;
+        this.fullName = fullName;
+    }
+
     public void setRoomNumber(int roomNumber){
         this.roomNumber = roomNumber;
     }
