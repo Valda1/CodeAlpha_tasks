@@ -12,11 +12,60 @@ import java.util.regex.Pattern;
 public class DB {
 
     final String dbURL = "jdbc:mysql://localhost:3306/JAVA_hotel_reservation_system";
-    final String user = "";
-    final String password = "";
+    final String user = "root";
+    final String password = "root";
 
+    public Room getRoom(Connection conn, int roomNumber) throws SQLException{
+        String sql = "SELECT * FROM rooms WHERE room_id =?";
+
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, roomNumber);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    int number = rs.getInt("room_id");
+                    boolean available = rs.getBoolean("is_available");
+                    String category = rs.getString("category");
+                    double price = rs.getDouble("price");
+
+                    return new Room(number, available, category, price);
+                }
+            }
+        }
+
+        return null;
+    }
 
     public int selectRoom(){
+        Scanner scanner = new Scanner(System.in);
+
+        try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
+            while(true){
+                System.out.println("Please choose the number of the room you would like to book:");
+                int selectedRoom = scanner.nextInt();
+
+                Room room = getRoom(conn, selectedRoom);
+
+                if(room == null){
+                    System.out.println("This room does not exist. Try again!");
+                }else if(room.getIsAvailable()){
+                    System.out.println("Room is available!");
+                    System.out.println("");
+                    return room.getRoomNumber();
+                }else{
+                    System.out.println("This room is not available. Try again!");
+                    System.out.println("");
+                }
+            }
+
+        }catch (SQLException e){
+            System.out.println("Database error: " + e.getMessage());
+            return -1;
+        }
+
+    }
+
+    /*public int selectRoom(){
     Scanner scanner = new Scanner(System.in);
 
     try (Connection conn = DriverManager.getConnection(dbURL, user, password)) {
@@ -51,7 +100,7 @@ public class DB {
         System.out.println("Database error: " + e.getMessage());
         return -1;
     }
-}
+}*/
 
     public String collectUserInfo(){
         Scanner scanner = new Scanner(System.in);
@@ -64,6 +113,7 @@ public class DB {
 
             if(matcher.matches()){
                 System.out.println("Name accepted!");
+                System.out.println("");
                 return fullName;
             }else{
                 System.out.println("The name entered in not valid. Try again!");
