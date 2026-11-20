@@ -35,7 +35,7 @@ public class DB {
         return null;
     } 
 
-    public int selectRoom(){
+    public Room selectRoom(){
         Scanner scanner = new Scanner(System.in);
 
         try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
@@ -50,56 +50,20 @@ public class DB {
                 }else if(room.getIsAvailable()){
                     System.out.println("Room is available!");
                     System.out.println("");
-                    return room.getRoomNumber();
+                    return room;
                 }else{
                     System.out.println("This room is not available. Try again!");
                     System.out.println("");
+                    return null;
                 }
             }
 
         }catch (SQLException e){
             System.out.println("Database error: " + e.getMessage());
-            return -1;
+            return null;
         }
 
     }
-
-    /*public int selectRoom(){
-    Scanner scanner = new Scanner(System.in);
-
-    try (Connection conn = DriverManager.getConnection(dbURL, user, password)) {
-        while (true) {
-            System.out.println("Please choose the number of the room you would like to book:");
-            int selectedRoom = scanner.nextInt();
-
-            String sql = "SELECT is_available FROM rooms WHERE room_id = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, selectedRoom);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        boolean isAvailable = rs.getBoolean("is_available");
-
-                        if (isAvailable) {
-                            System.out.println("Room is available!");
-                            System.out.println("");
-                            return selectedRoom;
-                        } else {
-                            System.out.println("This room is not available. Try again!");
-                            System.out.println("");
-                        }
-                    } else {
-                        System.out.println("This room does not exist. Try again!");
-                    }
-                }
-            }
-        }
-    }catch (SQLException e){
-        System.out.println("Database error: " + e.getMessage());
-        return -1;
-    }
-}*/
 
     public String collectUserInfo(){
         Scanner scanner = new Scanner(System.in);
@@ -258,18 +222,6 @@ public class DB {
                     System.out.println("Reservation does not exist!");
                 }
 
-                /*if(rs.next()){
-                    int roomNumber = rs.getInt(1);
-                    Date date = rs.getDate(2);
-                    String fullName = rs.getString(3);
-
-                    String output = "Reservation info: \n\t reservation_id: %d \n\t room_id: %d \n\t date: %s \n\t full_name: %s";
-
-                    System.out.println(String.format(output, reservationID, roomNumber, date, fullName));
-                }else{
-                    System.out.println("Reservation does not exist!");
-                }*/
-
             }catch (SQLException e){
                 System.out.println("Something went wrong: " + e);
 
@@ -279,12 +231,18 @@ public class DB {
     public void makeReservation(){
         try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
 
-            int roomNumber = selectRoom();
+            Room room = selectRoom();
+
+            if(room == null){
+                System.out.println("Reservation cancelled.");
+                return;
+            }
+
             String customerName = collectUserInfo();
-            boolean paymentSuccesful = makePayment(roomNumber);
+            boolean paymentSuccesful = makePayment(room);
 
             if(paymentSuccesful){
-                saveReservation(conn, roomNumber, customerName);
+                saveReservation(conn, room.getRoomNumber(), customerName);
             }else{
                 System.out.println("Reservation cancelled. No reservation was saved.");
             }
@@ -294,49 +252,39 @@ public class DB {
         }
     }
 
-    public boolean makePayment(int roomNumber){
+    public boolean makePayment(Room room){
         try(Connection conn = DriverManager.getConnection(dbURL, user, password)){
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("To complete the reservation you need to make a payment.");
 
-            String sql = "SELECT price FROM rooms WHERE room_id = ?";
+            double price = room.getPrice();
 
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, roomNumber);
-            ResultSet rs = ps.executeQuery();
-            double price;
+            System.out.println("The price of this room is: " + price);
+            System.out.println("Would you like to make the payment? y/n");
 
-            if(rs.next()){
-                price = rs.getDouble("price");
-                System.out.println("The price of this room is: " + price);
-                System.out.println("Would you like to make the payment? y/n");
-                String choice = scanner.next();
+            String choice = scanner.next();
 
-                if(choice.equalsIgnoreCase("y")){
-                    System.out.println("Please enter you credit card number (8 digits): ");
-                    String cardNumber = scanner.next();
-                    Pattern pattern = Pattern.compile("^[0-9]{8}$");
-                    Matcher matcher = pattern.matcher(cardNumber);
+            if(choice.equalsIgnoreCase("y")){
+                System.out.println("Please enter your credit card number (8 digits): ");
 
-                    if(matcher.matches()){
-                        System.out.println("Thank you! Your payment has been successful!");
-                        return true;
-                    }else{
-                        System.out.println("Invalid card number. Please try again!");
-                        return false;
-                    }
+                String cardNumber = scanner.next();
 
-                }else if(choice.equalsIgnoreCase("n")){
-                    System.out.println("Ok");
-                    return false;
+                Pattern pattern = Pattern.compile("^[0-9]{8}$");
+                Matcher matcher = pattern.matcher(cardNumber);
+
+                if(matcher.matches()){
+                    System.out.println("Thank you! Your payment has been successful!");
+                    return true;
                 }else{
-                    System.out.println("Incorrect input!");
+                    System.out.println("Invalid card number. Please try again!");
                     return false;
                 }
-
+            }else if(choice.equalsIgnoreCase("n")){
+                System.out.println("Thank you! Goodbye!");
+                return false;
             }else{
-                System.out.println("Something went wrong! Please try again!");
+                System.out.println("Incorrect input!");
                 return false;
             }
 
