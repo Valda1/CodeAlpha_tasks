@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.sql.ResultSet;
@@ -12,8 +11,8 @@ import java.util.regex.Pattern;
 public class DB {
 
     final String dbURL = "jdbc:mysql://localhost:3306/JAVA_hotel_reservation_system";
-    final String user = "root";
-    final String password = "root";
+    final String user = "";
+    final String password = "";
 
     public Room getRoom(Connection conn, int roomNumber) throws SQLException{
         String sql = "SELECT * FROM rooms WHERE room_id =?";
@@ -34,7 +33,7 @@ public class DB {
         }
 
         return null;
-    }
+    } 
 
     public int selectRoom(){
         Scanner scanner = new Scanner(System.in);
@@ -243,6 +242,23 @@ public class DB {
                 ResultSet rs = ps.executeQuery();
 
                 if(rs.next()){
+                    Reservation reservation = new Reservation(
+                        reservationID,
+                        rs.getInt("room_num"),
+                        rs.getDate("date").toLocalDate(),
+                        rs.getString("full_name")
+                    );
+
+                    System.out.println("Reservation info:");
+                    System.out.println("Reservation ID: " + reservation.getReservationID());
+                    System.out.println("Room number: " + reservation.getRoomNumber());
+                    System.out.println("Date: " + reservation.getDate());
+                    System.out.println("Full name: " + reservation.getFullName());
+                }else{
+                    System.out.println("Reservation does not exist!");
+                }
+
+                /*if(rs.next()){
                     int roomNumber = rs.getInt(1);
                     Date date = rs.getDate(2);
                     String fullName = rs.getString(3);
@@ -252,7 +268,7 @@ public class DB {
                     System.out.println(String.format(output, reservationID, roomNumber, date, fullName));
                 }else{
                     System.out.println("Reservation does not exist!");
-                }
+                }*/
 
             }catch (SQLException e){
                 System.out.println("Something went wrong: " + e);
