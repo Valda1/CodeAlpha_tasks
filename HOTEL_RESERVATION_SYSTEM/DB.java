@@ -252,12 +252,6 @@ public class DB {
                 System.out.println("Reservation cancelled. No reservation was saved.");
             }
 
-            /*if(paymentSuccesful){
-                saveReservation(conn, room.getRoomNumber(), customerName);
-            }else{
-                System.out.println("Reservation cancelled. No reservation was saved.");
-            }*/
-
         }catch(SQLException e){
             System.out.println("Reservation failed: " + e.getMessage());
         }
