@@ -26,6 +26,9 @@ public class Main {
         case 4:
             myData.selectRoom();
             break;
+        default:
+            System.out.println("Invalid option! Please enter 1, 2, 3 or 4.");
+            break;
     }
 }
    
