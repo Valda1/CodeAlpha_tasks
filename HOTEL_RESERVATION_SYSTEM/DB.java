@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class DB {
 
     final String dbURL = "jdbc:mysql://localhost:3306/JAVA_hotel_reservation_system";
-    final String user = "";
-    final String password = "";
+    final String user = System.getenv("DB_USER");
+    final String password = System.getenv("DB_PASSWORD");
 
     public Room getRoom(Connection conn, int roomNumber) throws SQLException{
         String sql = "SELECT * FROM rooms WHERE room_id =?";
