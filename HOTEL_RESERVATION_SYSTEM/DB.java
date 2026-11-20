@@ -84,7 +84,7 @@ public class DB {
         }
     }
 
-    public void saveReservation(Connection conn, int roomNumber, String fullName) throws SQLException {
+    public void saveReservation(Connection conn, Reservation reservation) throws SQLException {
         LocalDate date = LocalDate.now();
 
         String updateSQL = "UPDATE rooms SET is_available = FALSE WHERE room_id = ? AND is_available =TRUE";
@@ -94,7 +94,7 @@ public class DB {
 
         try{
             try(PreparedStatement updateStatement = conn.prepareStatement(updateSQL)){
-                updateStatement.setInt(1, roomNumber);
+                updateStatement.setInt(1, reservation.getRoomNumber());
 
                 int rowsUpdated = updateStatement.executeUpdate();
 
@@ -103,15 +103,14 @@ public class DB {
                     System.out.println("Sorry, room is no longer available or does not exist.");
                     return;
                 }else if(rowsUpdated > 0){
-                    conn.commit();
                     System.out.println("");
                 }
             }
 
             try(PreparedStatement insertStatement = conn.prepareStatement(insertSQL)){
-                insertStatement.setInt(1, roomNumber);
-                insertStatement.setDate(2, java.sql.Date.valueOf(date));
-                insertStatement.setString(3, fullName);
+                insertStatement.setInt(1, reservation.getRoomNumber());
+                insertStatement.setDate(2, java.sql.Date.valueOf(reservation.getDate()));
+                insertStatement.setString(3, reservation.getFullName());
 
                 int rowsInserted = insertStatement.executeUpdate();
 
@@ -242,10 +241,22 @@ public class DB {
             boolean paymentSuccesful = makePayment(room);
 
             if(paymentSuccesful){
-                saveReservation(conn, room.getRoomNumber(), customerName);
+                Reservation reservation = new Reservation(
+                    LocalDate.now(),
+                    room.getRoomNumber(),
+                    customerName
+                );
+
+                saveReservation(conn, reservation);
             }else{
                 System.out.println("Reservation cancelled. No reservation was saved.");
             }
+
+            /*if(paymentSuccesful){
+                saveReservation(conn, room.getRoomNumber(), customerName);
+            }else{
+                System.out.println("Reservation cancelled. No reservation was saved.");
+            }*/
 
         }catch(SQLException e){
             System.out.println("Reservation failed: " + e.getMessage());
