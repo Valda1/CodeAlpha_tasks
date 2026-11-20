@@ -3,8 +3,7 @@
         "."
     ],
     "java.project.referencedLibraries": [
-        "lib\\mysql-connector-j-26.7.0.jar",
-        "c:\\Users\\valda\\Desktop\\JAVA_CODE_ALPHA\\lib\\mysql-connector-j-26.7.0.jar"
+        "lib/**/*.jar"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
